@@ -1,0 +1,11 @@
+prefix=/data/mxe/usr/x86_64-w64-mingw32.shared.posix.all
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: MATIO
+Description: MATIO Library
+Version: 1.5.24
+Libs: -L${libdir} -lmatio
+Cflags: -I${includedir}
+Requires.private:  zlib >= 1.2.3

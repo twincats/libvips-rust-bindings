@@ -1,4 +1,26 @@
+# libvips-rust-bindings copy for temporary fix windows
+
+Because i need libvips to works in windows withouth extra step, and since the main libvips-rust-bindings not work there error type for windows:
+
+```rust
+pub type size_t = ::std::os::raw::c_ulong;
+///...
+pub type guint64 = ::std::os::raw::c_ulong;
+```
+
+in this package it's also add lib from libvips vips-dev-w64-all-8.15.0 for windows [https://github.com/libvips/build-win64-mxe/releases/tag/v8.15.0](https://github.com/libvips/build-win64-mxe/releases/tag/v8.15.0)
+this fix for windows come from oumad in [https://github.com/olxgroup-oss/libvips-rust-bindings/issues/4](https://github.com/olxgroup-oss/libvips-rust-bindings/issues/4)
+this package is for personal only until libvips-rust-bindings fix it for windows.
+
+to use this package add this to Cargo.toml
+
+```
+[dependencies]
+libvips = { git = "https://github.com/twincats/libvips-rust-bindings.git" branch = "main"}
+```
+
 # libvips-rust-bindings
+
 Rust bindings for libvips. Generated from `version 8.14.5`.
 
 This is a safe wrapper for [libvips](https://libvips.github.io/libvips/) C library. It is made on top of the C API and based on the introspection API results.
@@ -34,9 +56,9 @@ Vips needs to be initialized and shut down, this struct does this job, though yo
 
 Not all functions were implemented, so if you need some that are not yet there, feel free to open a PR or an issue (it is pretty straight forward to add the ones that needs to be manual).
 
-Many vips operations have optional arguments. The ones that have have been implemented with too variants by this crate. Basically there'll be a regular call with only the required parameters and an additional with the suffix `with_opts` which will take a struct holding the defaults. 
+Many vips operations have optional arguments. The ones that have have been implemented with too variants by this crate. Basically there'll be a regular call with only the required parameters and an additional with the suffix `with_opts` which will take a struct holding the defaults.
 
-The structs's names for those defaults are named after the operation name in `class case` plus the suffix `Options`. All the struct implements the `Default` trait, so you can construct them like this for example: 
+The structs's names for those defaults are named after the operation name in `class case` plus the suffix `Options`. All the struct implements the `Default` trait, so you can construct them like this for example:
 
 ```rust
 let options = ops::Composite2Options {
@@ -46,9 +68,9 @@ let options = ops::Composite2Options {
 }
 ```
 
-In the moment the error messages are not being appended to the errors themselves. They're in the libvips error buffer. The error buffer operations are implented inside the `VipsApps` struct. 
+In the moment the error messages are not being appended to the errors themselves. They're in the libvips error buffer. The error buffer operations are implented inside the `VipsApps` struct.
 
-Most (if not all) vips operations don't mutate the `VipsImage` object, so they'll return a new object for this. The implementation of `VipsImage` in this crate takes care of freeing the internal pointer after it is dropped. <span style="color:red">Be aware that the VipsImage object is not thread safe in the moment.</span> I'll investigate what is happening and provide a solution for it in the future. 
+Most (if not all) vips operations don't mutate the `VipsImage` object, so they'll return a new object for this. The implementation of `VipsImage` in this crate takes care of freeing the internal pointer after it is dropped. <span style="color:red">Be aware that the VipsImage object is not thread safe in the moment.</span> I'll investigate what is happening and provide a solution for it in the future.
 
 ### Example
 
